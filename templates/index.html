@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBlog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:       #F7F5F3;
+            --surface:  #FFFFFF;
+            --border:   #E8E2DB;
+            --text:     #2D2926;
+            --text-sec: #6B7280;
+            --accent:   #7C9A82;
+            --accent-h: #5F7D64;
+            --shadow-s: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-m: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+            --radius:   10px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 60px 20px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: var(--text-sec);
+            font-size: 0.95rem;
+        }
+        .header-bar {
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            margin: 20px auto 0;
+        }
+
+        /* --- Container --- */
+        .container {
+            max-width: min(90%, 680px);
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+
+        /* --- Page List --- */
+        .page-list { list-style: none; }
+
+        .page-item {
+            background: var(--surface);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-s);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .page-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-m);
+        }
+        .page-item:hover::before {
+            opacity: 1;
+        }
+
+        .page-item a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            text-decoration: none;
+            color: inherit;
+            gap: 16px;
+        }
+
+        .page-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            transition: color 0.2s;
+        }
+        .page-item:hover .page-name {
+            color: var(--accent-h);
+        }
+
+        .page-date {
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.02em;
+        }
+
+        /* --- Empty State --- */
+        .empty {
+            text-align: center;
+            color: var(--text-sec);
+            padding: 80px 20px;
+        }
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+        .empty p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .empty code {
+            background: var(--border);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-sec);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            max-width: min(90%, 680px);
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>QuickBlog</h1>
+        <p>Simple thoughts, simply shared</p>
+        <div class="header-bar"></div>
+    </header>
+
+    <main class="container">
+        {{if .}}
+        <ul class="page-list">
+            {{range .}}
+            <li class="page-item">
+                <a href="/page/{{.File}}">
+                    <span class="page-name">{{.Name}}</span>
+                    <span class="page-date">{{formatDate .ModTime}}</span>
+                </a>
+            </li>
+            {{end}}
+        </ul>
+        {{else}}
+        <div class="empty">
+            <div class="empty-icon">&#9997;</div>
+            <p>No pages yet.</p>
+            <p>Add <code>.html</code> or <code>.md</code> files to get started.</p>
+        </div>
+        {{end}}
+    </main>
+
+    <footer class="footer">
+        Powered by QuickBlog
+    </footer>
+</body>
+</html>
