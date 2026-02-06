@@ -1,5 +1,7 @@
 # QuickBlog
 
+[中文文档](README_CN.md)
+
 A lightweight static blog server written in Go. Drop `.html` or `.md` files into a directory and they're instantly served as a blog — no database, no config files, no framework.
 
 ## Features
